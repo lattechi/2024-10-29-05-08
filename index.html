@@ -18,7 +18,7 @@
         .grid {
             display: grid;
             gap: 1vmin;
-            max-width: 100vmin;
+            max-width: 70vmin;
             margin: 20px auto;
         }
         .grid img {
@@ -97,11 +97,6 @@
         });
 
         createGrid(5);
-
-        window.addEventListener("beforeunload", (event) => {
-            event.preventDefault();
-            event.returnValue = "ページを離れると変更が保存されません。よろしいですか？";
-        });
     </script>
 
 </body>
