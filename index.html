@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ランダム画像グリッド</title>
     <style>
-        /* 背景色の指定 */
         body {
             background-color: #f0f0f0;
             display: flex;
@@ -16,7 +15,6 @@
             padding: 20px;
             color: #333;
         }
-        /* グリッドのレイアウト */
         .grid {
             display: grid;
             gap: 1vmin;
@@ -29,7 +27,6 @@
             aspect-ratio: 1;
             object-fit: cover;
         }
-        /* ボタンのスタイル */
         .button-container {
             margin-top: 10px;
             display: flex;
@@ -52,7 +49,6 @@
 
     <h1>ランダム画像グリッド</h1>
 
-    <!-- グリッドサイズを選択 -->
     <label for="grid-size">グリッドサイズ:</label>
     <select id="grid-size">
         <option value="3">3x3</option>
@@ -60,13 +56,10 @@
         <option value="5" selected>5x5</option>
     </select>
 
-    <!-- 画像グリッド -->
     <div class="grid" id="image-grid"></div>
 
-    <!-- ボタンのコンテナ -->
     <div class="button-container">
-        <!-- 再読み込みボタン -->
-        <button class="reload-button" onclick="reloadGrid()">再読み込み</button>
+        <button class="reload-button" onclick="confirmReload()">再読み込み</button>
     </div>
 
     <script>
@@ -78,13 +71,10 @@
             "./image/5.jpg",
         ];
 
-        // グリッドを生成する関数
         function createGrid(size) {
             const gridContainer = document.getElementById("image-grid");
-            gridContainer.innerHTML = ''; // グリッドをクリア
-            gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`; // 列数を設定
-
-            // グリッドにランダム画像を配置
+            gridContainer.innerHTML = '';
+            gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
             for (let i = 0; i < size * size; i++) {
                 const img = document.createElement("img");
                 const randomIndex = Math.floor(Math.random() * images.length);
@@ -93,22 +83,21 @@
             }
         }
 
-        // 再読み込みボタン用関数
-        function reloadGrid() {
-            const gridSize = parseInt(document.getElementById("grid-size").value);
-            createGrid(gridSize);
+        function confirmReload() {
+            const userConfirmed = confirm("ページを離れると変更が保存されません。よろしいですか？");
+            if (userConfirmed) {
+                const gridSize = parseInt(document.getElementById("grid-size").value);
+                createGrid(gridSize);
+            }
         }
 
-        // グリッドサイズ選択変更時に対応
         document.getElementById("grid-size").addEventListener("change", (event) => {
             const gridSize = parseInt(event.target.value);
             createGrid(gridSize);
         });
 
-        // ページ読み込み時に初期グリッドを表示
         createGrid(5);
 
-        // 再読み込みやウィンドウ閉じる際に確認
         window.addEventListener("beforeunload", (event) => {
             event.preventDefault();
             event.returnValue = "ページを離れると変更が保存されません。よろしいですか？";
