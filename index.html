@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5×5ランダム画像グリッド</title>
     <style>
+        /* グリッドレイアウト */
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            width: 500px;
+            gap: 1vmin;
+            max-width: 100vmin;
             margin: 0 auto;
         }
+        /* 画像サイズはコンテナに合わせて自動調整 */
         .grid img {
             width: 100%;
             height: auto;
+            aspect-ratio: 1;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -26,7 +30,11 @@
     <script>
         // GitHubにアップロードした画像のURLリストを用意
         const images = [
-            "./image1.png",
+            "./image/1.jpg",
+            "./image/2.jpg",
+            "./image/3.jpg",
+            "./image/4.jpg",
+            "./image/5.jpg",
             //"https://github.com/ユーザー名/リポジトリ名/raw/main/path/to/image2.jpg",
             // 必要に応じて画像URLを追加
         ];
