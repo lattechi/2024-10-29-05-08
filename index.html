@@ -3,51 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5×5ランダム画像グリッド</title>
+    <title>ランダム画像グリッド</title>
     <style>
-        /* グリッドレイアウト */
+        /* 背景色の指定 */
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        /* グリッドのレイアウト */
         .grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
             gap: 1vmin;
             max-width: 100vmin;
-            margin: 0 auto;
+            margin: 20px auto;
         }
-        /* 画像サイズはコンテナに合わせて自動調整 */
         .grid img {
             width: 100%;
             height: auto;
             aspect-ratio: 1;
             object-fit: cover;
         }
+        /* ボタンのスタイル */
+        .button-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .reload-button {
+            background-color: #4CAF50;
+            color: white;
+        }
     </style>
 </head>
 <body>
 
-    <h1>5×5 ランダム画像グリッド</h1>
+    <h1>ランダム画像グリッド</h1>
+
+    <!-- グリッドサイズを選択 -->
+    <label for="grid-size">グリッドサイズ:</label>
+    <select id="grid-size">
+        <option value="3">3x3</option>
+        <option value="4">4x4</option>
+        <option value="5" selected>5x5</option>
+    </select>
+
+    <!-- 画像グリッド -->
     <div class="grid" id="image-grid"></div>
 
+    <!-- ボタンのコンテナ -->
+    <div class="button-container">
+        <!-- 再読み込みボタン -->
+        <button class="reload-button" onclick="reloadGrid()">再読み込み</button>
+    </div>
+
     <script>
-        // GitHubにアップロードした画像のURLリストを用意
         const images = [
             "./image/1.jpg",
             "./image/2.jpg",
             "./image/3.jpg",
             "./image/4.jpg",
             "./image/5.jpg",
-            //"https://github.com/ユーザー名/リポジトリ名/raw/main/path/to/image2.jpg",
-            // 必要に応じて画像URLを追加
         ];
 
-        // 5×5のグリッドにランダムに配置するために25個の画像を選択
-        const gridContainer = document.getElementById("image-grid");
-        for (let i = 0; i < 25; i++) {
-            const img = document.createElement("img");
-            // ランダムに画像を選ぶ
-            const randomIndex = Math.floor(Math.random() * images.length);
-            img.src = images[randomIndex];
-            gridContainer.appendChild(img);
+        // グリッドを生成する関数
+        function createGrid(size) {
+            const gridContainer = document.getElementById("image-grid");
+            gridContainer.innerHTML = ''; // グリッドをクリア
+            gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`; // 列数を設定
+
+            // グリッドにランダム画像を配置
+            for (let i = 0; i < size * size; i++) {
+                const img = document.createElement("img");
+                const randomIndex = Math.floor(Math.random() * images.length);
+                img.src = images[randomIndex];
+                gridContainer.appendChild(img);
+            }
         }
+
+        // 再読み込みボタン用関数
+        function reloadGrid() {
+            const gridSize = parseInt(document.getElementById("grid-size").value);
+            createGrid(gridSize);
+        }
+
+        // グリッドサイズ選択変更時に対応
+        document.getElementById("grid-size").addEventListener("change", (event) => {
+            const gridSize = parseInt(event.target.value);
+            createGrid(gridSize);
+        });
+
+        // ページ読み込み時に初期グリッドを表示
+        createGrid(5);
+
+        // 再読み込みやウィンドウ閉じる際に確認
+        window.addEventListener("beforeunload", (event) => {
+            event.preventDefault();
+            event.returnValue = "ページを離れると変更が保存されません。よろしいですか？";
+        });
     </script>
 
 </body>
