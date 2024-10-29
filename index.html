@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5×5ランダム画像グリッド</title>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            width: 500px;
+            margin: 0 auto;
+        }
+        .grid img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>5×5 ランダム画像グリッド</h1>
+    <div class="grid" id="image-grid"></div>
+
+    <script>
+        // GitHubにアップロードした画像のURLリストを用意
+        const images = [
+            "./image1.png",
+            //"https://github.com/ユーザー名/リポジトリ名/raw/main/path/to/image2.jpg",
+            // 必要に応じて画像URLを追加
+        ];
+
+        // 5×5のグリッドにランダムに配置するために25個の画像を選択
+        const gridContainer = document.getElementById("image-grid");
+        for (let i = 0; i < 25; i++) {
+            const img = document.createElement("img");
+            // ランダムに画像を選ぶ
+            const randomIndex = Math.floor(Math.random() * images.length);
+            img.src = images[randomIndex];
+            gridContainer.appendChild(img);
+        }
+    </script>
+
+</body>
+</html>
