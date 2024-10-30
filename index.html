@@ -1,95 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ランダム画像グリッド</title>
-    <style>
-        body {
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        .grid {
-            display: grid;
-            gap: 1vmin;
-            max-width: 70vmin;
-            margin: 20px auto;
-        }
-        .grid img {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1;
-            object-fit: cover;
-        }
-        .button-container {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .reload-button {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-    <h1>ランダム画像グリッド</h1>
 
     <label for="grid-size">グリッドサイズ:</label>
     <select id="grid-size">
-        <option value="3">3x3</option>
-        <option value="4">4x4</option>
         <option value="5" selected>5x5</option>
+        <option value="4">4x4</option>
+        <option value="3">3x3</option>
     </select>
-
-    <div class="grid" id="image-grid"></div>
 
     <div class="button-container">
         <button class="reload-button" onclick="confirmReload()">再読み込み</button>
     </div>
 
+    <br>
+
+    <div class="grid" id="image-grid"></div>
+
+
+    <!-- タイマー表示 -->
+
+    <!-- タイマー操作ボタン -->
+    <div class="button-container2">
+        <div>普通の３分タイマー</div>
+        <div class="timer-container" id="timer-display">03:00</div>
+        <div class="button-container">
+            <button class="start-button" onclick="startTimer()">開始</button>
+            <button class="pause-button" onclick="pauseTimer()">停止</button>
+            <button class="reset-button" onclick="resetTimer()">リセット</button>
+        </div>
+    </div>
+    <br>
+    <br>
+
     <script>
         const images = [
-            "./image/1.jpg",
-            "./image/2.jpg",
-            "./image/3.jpg",
-            "./image/4.jpg",
-            "./image/5.jpg",
-            "./image/6.jpg",
-            "./image/7.jpg",
-            "./image/8.jpg",
-            "./image/9.jpg",
-            "./image/10.jpg",
-            "./image/11.jpg",
-            "./image/12.jpg",
-            "./image/13.jpg",
-            "./image/14.jpg",
-            "./image/15.jpg",
-            "./image/16.jpg",
-            "./image/17.jpg",
-            "./image/18.jpg",
-            "./image/19.jpg",
-            "./image/20.jpg",
-            "./image/21.jpg",
-            "./image/22.jpg",
-            "./image/23.jpg",
-            "./image/24.jpg",
-            "./image/25.jpg",
+            "./image/1.jpg", "./image/2.jpg", "./image/3.jpg", "./image/4.jpg", "./image/5.jpg",
+            "./image/6.jpg", "./image/7.jpg", "./image/8.jpg", "./image/9.jpg", "./image/10.jpg",
+            "./image/11.jpg", "./image/12.jpg", "./image/13.jpg", "./image/14.jpg", "./image/15.jpg",
+            "./image/16.jpg", "./image/17.jpg", "./image/18.jpg", "./image/19.jpg", "./image/20.jpg",
+            "./image/21.jpg", "./image/22.jpg", "./image/23.jpg", "./image/24.jpg", "./image/25.jpg",
         ];
+
+        let timer;
+        let timeRemaining = 180;
+        let isRunning = false;
+
+        function displayTime() {
+            const minutes = String(Math.floor(timeRemaining / 60)).padStart(2, '0');
+            const seconds = String(timeRemaining % 60).padStart(2, '0');
+            document.getElementById("timer-display").textContent = `${minutes}:${seconds}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            document.getElementById("timer-display").classList.add("active-timer");
+            timer = setInterval(() => {
+                if (timeRemaining > 0) {
+                    timeRemaining--;
+                    displayTime();
+                } else {
+                    clearInterval(timer);
+                    isRunning = false;
+                    document.getElementById("timer-display").classList.remove("active-timer");
+                    alert("時間が終了しました！");
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            document.getElementById("timer-display").classList.remove("active-timer");
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timeRemaining = 180;
+            isRunning = false;
+            document.getElementById("timer-display").classList.remove("active-timer");
+            displayTime();
+        }
 
         function createGrid(size) {
             const gridContainer = document.getElementById("image-grid");
@@ -121,7 +123,9 @@
         });
 
         createGrid(5);
+        displayTime();
     </script>
 
 </body>
+
 </html>
